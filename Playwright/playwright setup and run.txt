@@ -1,0 +1,111 @@
+1. pull new project from git
+2. go to the folder
+3. run "npm init playwright@latest" and follow directions
+	need to install create-playwright@latest. ok? yes
+	use typescript or javascript? javascript
+	where to put your end-to-end tests? tests. press enter
+	add a github action workflow? false. press enter
+	install playwright browsers? true. press enter
+4. write first test
+5. run test "npx playwright test --ui"
+
+
+
+// playwright.config.js
+const { defineConfig, devices } = require('@playwright/test');
+
+module.exports = defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  
+  use: {
+    headless: process.env.CI ? true : false,
+    viewport: { width: 1920, height: 1080 },
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL: 'https://magento.softwaretestingboard.com',
+	//baseURL: 'https://www.automationexercise.com/',
+    trace: 'on-first-retry',
+  },
+
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+});
+
+
+
+//working example
+import { test, expect } from "@playwright/test";
+
+test.describe("first test", () => {
+	test("verify ...", async ({ page }) => {
+		await page.goto("https://www.automationexercise.com");
+
+		// const homeNav = page.locator(".navbar-nav a[href='/']");
+
+		await expect(page.locator(".navbar-nav a[href='/']")).toHaveCSS("color", "rgb(255, 165, 0)");
+	});
+});
+
+
+
+
+
+
+
+import { test, expect } from "@playwright/test";
+
+test.describe("first test", () => {
+	test.beforeEach(async ({ page }) => {
+		await page.goto("/");
+		await page.locator("#j_username").fill("admin");
+		await page.locator('input[name="j_password"]').fill("password");
+		await page.locator('button[name="Submit"]').click();
+	});
+
+	test("verify display the shopping cart icon", async ({ page }) => {
+		//const title = await page.locator(".page-title span");
+
+		await expect(page.locator(".page-title span")).toHaveText("Home Page");
+	});
+});
+
+
+
+
+
+
+
+
+
+
+import {test, expect} from "@playwright/test";
+
+test.describe('first test', () => {
+
+    test.beforeEach(async ({page}) => {
+        await page.goto('/');
+    })
+
+    test('verify display the shopping cart icon', async ({page}) => {
+        const cartIcon = await page.getByRole('link', {name: ' My Cart'});
+
+        await expect(cartIcon).toBeVisible();
+    })
+
+	test('navigate to home page clicking on logo from "What\'s New" page', async ({ page }) => {
+		await page.getByRole('listitem').filter({ hasText: "What's New" }).click();
+		await expect(page).toHaveURL(BASE_URL + '/what-is-new.html');
+
+		await page.getByLabel('store logo').click();
+		await expect(page).toHaveURL(BASE_URL);
+	})
+})

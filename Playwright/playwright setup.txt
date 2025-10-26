@@ -1,0 +1,15 @@
+node -v
+npm -v
+
+go to the folder where project will live
+npm init playwright@latest
+	need to install create-playwright@latest. ok? yes
+	use typescript or javascript? javascript
+	where to put your end-to-end tests? tests. press enter
+	add a github action workflow? false. press enter
+	install playwright browsers? true. press enter
+	
+	
+npx playwright --version (1.42.1)
+
+npx playwright test - starting the tests
