@@ -29,13 +29,13 @@ test.describe("first test suite", () => {
 		await page.goto("/");
 
 		const homepageLink = page.locator(".navbar-nav li:first-child a");
-		expect(homepageLink).toHaveCSS("color", "rgb(255, 165, 0)");
+		await expect(homepageLink).toHaveCSS("color", "rgb(255, 165, 0)");
 	});
 
 	test("verify logo", async ({ page }) => {
 		await page.goto("/");
 
-		expect(page.locator(".logo img")).toHaveAttribute(
+		await expect(page.locator(".logo img")).toHaveAttribute(
 			"src",
 			"/static/images/home/logo.png"
 		);
@@ -59,7 +59,33 @@ test.describe("first test suite", () => {
 		expect.soft(title).toEqual("Automation Exercise 2");
 
 		const image = page.locator(".logo img");
-		expect.soft(image).toHaveAttribute("src", "/static/images/home/logo2.png");
+		await expect
+			.soft(image)
+			.toHaveAttribute("src", "/static/images/home/logo2.png");
+	});
+
+	//
+	//
+	//
+	//
+	//
+
+	test("native locators", async ({ page }) => {
+		await page.goto("/");
+
+		// const homeLink = page.locator(".navbar-nav li:first-child a");
+		// await expect(homeLink).toHaveCSS("color", "rgb(255, 165, 0)");
+
+		// const logo = page.locator(".logo img");
+		// await expect(logo).toHaveAttribute("src", "/static/images/home/logo.png");
+
+		//
+
+		// const homeLink1 = page.getByText("Home");
+		// await expect(homeLink1).toHaveCSS("color", "rgb(255, 165, 0)");
+
+		// const logo1 = page.getByAltText("Website for automation practice");
+		// await expect(logo1).toHaveAttribute("src", "/static/images/home/logo.png");
 	});
 
 	//
@@ -71,6 +97,30 @@ test.describe("first test suite", () => {
 	// test.beforeEach(async ({ page }) => {
 	// 	await page.goto("/");
 	// });
+
+	//
+	//
+	//
+	//
+	//
+
+	test("first, last, nth methods", async ({ page }) => {
+		await page.goto("/");
+
+		const homeBullet = page.locator(".navbar-nav li:first-child");
+		await expect(homeBullet).toHaveText("Home");
+
+		// const homeBullet1 = page.locator(".navbar-nav li").first();
+		// await expect(homeBullet1).toHaveText("Home");
+
+		//
+		//
+
+		/* --- use playwright first(), then add rest of the locator
+		const homeLink = page.locator(".navbar-nav li").first().locator("a");
+		await expect(homeLink).toHaveCSS("color", "rgb(255, 165, 0)");
+        */
+	});
 
 	//
 	//
@@ -171,10 +221,10 @@ test.describe("first test suite", () => {
 		/* ждем пока новая страница полностью загрузиться */
 		// await newPage.waitForLoadState();
 
-		expect(page.locator("#result-text")).toHaveText(
+		await expect(page.locator("#result-text")).toHaveText(
 			"I am a new page in a new tab"
 		);
-		// expect(newPage.locator("#result-text")).toHaveText(
+		// await expect(newPage.locator("#result-text")).toHaveText(
 		// 	"I am a new page in a new tab"
 		// );
 	});
@@ -192,6 +242,64 @@ test.describe("first test suite", () => {
 	test("verify copy", async ({ page }) => {
 		await page.goto("/");
 
-		expect(page.locator("h1").first()).toHaveText(pageHeadline);
+		await expect(page.locator("h1").first()).toHaveText(pageHeadline);
+	});
+
+	//
+	//
+	//
+	//
+	//
+
+	// ---- drag and drop
+
+	test("drag and drop", async ({ page }) => {
+		await page.goto("https://www.qa-practice.com/elements/dragndrop/boxes");
+
+		// const sourceEl = page.locator("#rect-draggable");
+		// const destinationEl = page.locator("#rect-droppable");
+
+		// await sourceEl.dragTo(destinationEl);
+
+		// // проверим, что source теперь внутри destination
+		// await expect(destinationEl).toContainText("Drag me");
+
+		//
+		//
+		//
+
+		// --- using mouse actions
+		// Этот метод обеспечивает более детальный контроль и может быть полезен для
+		// более сложных сценариев перетаскивания или когда dragTo() ведет себя не так, как ожидалось.
+
+		// const sourceEl = page.locator("#rect-draggable");
+		// const destinationEl = page.locator("#rect-droppable");
+
+		// await sourceEl.hover(); // hover over the source element
+		// await page.mouse.down(); // press left mouse button
+		// await destinationEl.hover(); // hover over the destination element
+		// await page.mouse.up(); // release the left mouse button
+
+		// await expect(destinationEl).toContainText("Drag me");
+	});
+
+	//
+	//
+	//
+	//
+	//
+
+	// ---- working with iframes
+
+	test("iframes", async ({ page }) => {
+		await page.goto("https://www.qa-practice.com/elements/iframe/iframe_page");
+
+		const iframe = page.frameLocator(".embed-responsive-item");
+
+		const buttonInsideIframe = iframe.locator(".btn-primary");
+
+		await buttonInsideIframe.click();
+
+		await expect(buttonInsideIframe).toBeVisible();
 	});
 });
