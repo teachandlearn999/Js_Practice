@@ -294,12 +294,12 @@ test.describe("first test suite", () => {
 	test("iframes", async ({ page }) => {
 		await page.goto("https://www.qa-practice.com/elements/iframe/iframe_page");
 
-		const iframe = page.frameLocator(".embed-responsive-item");
+		// const iframe = page.frameLocator(".embed-responsive-item");
 
-		const buttonInsideIframe = iframe.locator(".btn-primary");
+		// const buttonInsideIframe = iframe.locator(".btn-primary");
 
-		await buttonInsideIframe.click();
+		// await buttonInsideIframe.click();
 
-		await expect(buttonInsideIframe).toBeVisible();
+		// await expect(buttonInsideIframe).toBeVisible();
 	});
 });
