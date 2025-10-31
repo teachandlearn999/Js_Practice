@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { handleBrowserConsentPopup } from "./helpers/browserConsentPopupHandler";
 import { pageHeadline } from "./helpers/firstTestData";
 
 test.describe("first test suite", () => {
@@ -200,7 +201,7 @@ test.describe("first test suite", () => {
 	//
 	//
 
-	// ----- loading a new page (link with _blank)
+	// ----- Работа с новыми страницами после клика на ссылку (link with _blank)
 
 	test("loading a new page", async ({ page, context }) => {
 		await page.goto("https://www.qa-practice.com/elements/new_tab/link");
@@ -227,6 +228,23 @@ test.describe("first test suite", () => {
 		// await expect(newPage.locator("#result-text")).toHaveText(
 		// 	"I am a new page in a new tab"
 		// );
+	});
+
+	//
+	//
+	//
+	//
+	// ---- Browser Consent Popups
+	// ---- (handle Europe's consent popup for websites)
+
+	// import { handleBrowserConsentPopup } from "./helpers/browserConsentPopupHandler";
+
+	test("browser consent popup", async ({ page }) => {
+		await page.goto("/");
+
+		handleBrowserConsentPopup(page);
+
+		// ... rest of the test
 	});
 
 	//
