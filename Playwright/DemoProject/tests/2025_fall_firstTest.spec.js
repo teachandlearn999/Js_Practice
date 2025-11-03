@@ -5,7 +5,9 @@ import { pageHeadline } from "./helpers/firstTestData";
 test.describe("first test suite", () => {
 	//
 
-	// ----- lesson 1
+	// -----------------
+	// lesson 1
+	// -----------------
 
 	/*
     test - функция, используется для прогона тестов
@@ -51,7 +53,9 @@ test.describe("first test suite", () => {
 	//
 	//
 
+	// -----------------
 	// lesson 2
+	// -----------------
 
 	test("soft assert", async ({ page }) => {
 		await page.goto("/");
@@ -71,8 +75,32 @@ test.describe("first test suite", () => {
 	//
 	//
 
+	/* --- inject html before testing
+    
+	test("inject html before testing", async ({ page }) => {
+		page.setContent(`
+        <html>
+        <body>
+            <label>
+                <input type="checkbox"> Test 
+            </label>
+        </body>
+        </html>
+        `);
+		const aa = page.getByRole("checkbox", { name: "Test" });
+		await expect(aa).toBeVisible();
+	});
+    */
+
+	//
+	//
+	//
+	//
+
 	test("native locators", async ({ page }) => {
 		await page.goto("/");
+
+		// // можно переписать предыдущие тесты:
 
 		// const homeLink = page.locator(".navbar-nav li:first-child a");
 		// await expect(homeLink).toHaveCSS("color", "rgb(255, 165, 0)");
@@ -135,11 +163,26 @@ test.describe("first test suite", () => {
 
 		const linksLocator = page.locator(".navbar-nav li");
 
-		const allLinks = await linksLocator.all();
-		console.log(allLinks);
+		// -- all()
+
+		const allLinksLocators = await linksLocator.all();
+		console.log("all links: \n", allLinksLocators);
+
+		for (let link of allLinksLocators) {
+			const innerText = await link.innerText();
+			if (innerText.includes("Test Cases")) {
+				await link.click();
+				break;
+			}
+		}
+
+		expect(page).toHaveURL("https://www.automationexercise.com/test_cases");
+
+		//
+		// -- allInnerTexts()
 
 		const allInnerTexts = await linksLocator.allInnerTexts();
-		console.log(allInnerTexts);
+		console.log("\nall inner texts: \n", allInnerTexts);
 
 		// --- trim out non-text in the results
 		// const allTrueTexts = allInnerTexts.map((item) => {
@@ -147,10 +190,16 @@ test.describe("first test suite", () => {
 		// });
 		// console.log(allTrueTexts);
 
-		const linkCount = await linksLocator.count();
-		console.log(linkCount);
+		//
+		// -- count()
 
-		// Метод filter()
+		const linkCount = await linksLocator.count();
+		console.log("\nlink count: ", linkCount);
+
+		//
+		//
+
+		// --- Метод filter()
 		await linksLocator.filter({ hasText: "Products" }).click();
 	});
 
@@ -165,12 +214,10 @@ test.describe("first test suite", () => {
 		await page.goto("/signup");
 
 		await page
-			.locator("form[action='/signup']")
-			.getByPlaceholder("Name")
+			.locator("form[action='/signup'] input[data-qa*='name']")
 			.fill("aaaa");
 		await page
-			.locator("form[action='/signup']")
-			.getByPlaceholder("Email Address")
+			.locator("form[action='/signup'] input[data-qa*='email']")
 			.fill("aaaa@aaaa.aaaa");
 		await page.locator("form[action='/signup'] button").click();
 
@@ -178,21 +225,19 @@ test.describe("first test suite", () => {
 
 		// select value
 		await dropdown.selectOption("October");
+		// await dropdown.selectOption({ value: "9" });
+		// await dropdown.selectOption([{ index: 3 }]);
 
 		// get selected value
 		const matchValue = await dropdown.inputValue();
-		console.log(matchValue);
+		console.log("selected value: ", matchValue);
 
-		// get selected text
+		/* // alternative? get selected text
 		const matchText = await dropdown.evaluate(
 			(elem) => elem.options[elem.selectedIndex].text
 		);
 		console.log(matchText);
-
-		//
-		await dropdown.selectOption({ value: "9" });
-
-		await dropdown.selectOption([{ index: 3 }]);
+        */
 	});
 
 	//
