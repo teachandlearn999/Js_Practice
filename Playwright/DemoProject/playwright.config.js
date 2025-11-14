@@ -29,7 +29,8 @@ export default defineConfig({
 		// headless: process.env.CI ? true : false,
 		viewport: { width: 1920, height: 1080 },
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: "https://www.automationexercise.com",
+		// baseURL: "https://www.automationexercise.com",
+		baseURL: "http://localhost:8080",
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
