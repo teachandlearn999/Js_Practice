@@ -132,7 +132,7 @@ test.describe("first test suite", () => {
 
 	// --- working with hover menu on the project items
 
-	test("hover menu on project items", async ({ page }) => {
+	test("testing hover menu for job on homepage", async ({ page }) => {
 		//#region login (already done in jenkins)
 		await page.goto(`http://localhost:8080/`);
 		await page.locator("#j_username").fill("admin");
@@ -165,25 +165,41 @@ test.describe("first test suite", () => {
 		//
 
 		// 1. Get locator of the job
-		const jobLink = page.getByRole("link", {
-			name: jenkinsData.jobName,
-			exact: true,
-		});
+		const jobLink = page.locator(
+			`#job_${jenkinsData.jobName} .jenkins-table__link`
+		);
+
+		// const jobLink = page.getByRole("link", {
+		// 	name: jenkinsData.jobName,
+		// 	exact: true,
+		// });
+
+		// ---
 
 		// 2. Hover the job link (to make the button appear).
 		await jobLink.hover();
 
+		// ---
+
 		// 3. Get locator of the chevron button
-		const chevronButton = jobLink.getByRole("button");
+		const chevronButton = page.locator(`#job_${jenkinsData.jobName} button`);
+		// const chevronButton = jobLink.getByRole("button");
 
 		// Ensure the button is visible before attempting to focus/click
 		await chevronButton.waitFor({ state: "visible" });
 
-		// 4. Click the button, but also try simulating a Tab/Enter key sequence
-		// to ensure the element receives focus and triggers the dropdown logic.
+		// ---
+
+		// 4. Click the button.
 		// NOTE: doing a normal hover/click would not work on CI
-		await chevronButton.focus(); // Give the element focus
-		await chevronButton.press("Enter"); // Simulate activation via keyboard
+		// Instead, need to simulate Tab/Enter key sequence to focus on element and activate it
+		await chevronButton.click();
+
+		// -> this works:
+		// await chevronButton.focus(); // Give the element focus
+		// await chevronButton.press("Enter"); // Simulate activation via keyboard
+
+		// ---
 
 		// 5. Get locator of the popup
 		const popupRoot = page.locator("div[id^='tippy-']");
@@ -191,15 +207,22 @@ test.describe("first test suite", () => {
 		// Wait for the popup to display
 		await popupRoot.waitFor({ state: "attached", timeout: 5000 });
 
-		// 6. Get locator of the links inside the popup
+		// ---
+
+		// 6. Get the locator of links inside popup
 		const popupLinks = popupRoot.locator(
 			`.jenkins-dropdown [href*='${jenkinsData.jobName}']`
 		);
-
 		console.log("popupLinks: ", await popupLinks.allInnerTexts());
 
-		expect(await popupLinks.allInnerTexts()).toContain(
-			jenkinsData.jobPopupOptions.configure
-		);
+		// ---
+
+		// 7. Get all text of the links
+		const popupLinksData = await popupLinks.allInnerTexts();
+
+		// ---
+
+		// 8. Assert
+		expect(popupLinksData).toContain(jenkinsData.jobPopupOptions.configure);
 	});
 });
