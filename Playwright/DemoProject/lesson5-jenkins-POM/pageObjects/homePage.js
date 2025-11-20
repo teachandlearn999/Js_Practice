@@ -10,13 +10,14 @@ class HomePage extends Header {
 		super(page);
 	}
 
-	locNewItemLink = () => this.page.locator("a[href='/view/all/newJob']");
-	locProjectLink = () => this.page.locator("#projectstatus .jenkins-table__link");
-	locProjectName = () =>
+	getLocatorNewItemLink = () => this.page.locator("a[href='/view/all/newJob']");
+	getLocatorProjectLink = () =>
+		this.page.locator("#projectstatus .jenkins-table__link");
+	getLocatorProjectName = () =>
 		this.page.locator("#projectstatus .jenkins-table__link span");
 
 	async clickNewItemLink() {
-		await this.locNewItemLink().click();
+		await this.getLocatorNewItemLink().click();
 		return new NewItemPage(this.page);
 	}
 }

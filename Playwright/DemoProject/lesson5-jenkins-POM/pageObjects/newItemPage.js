@@ -6,24 +6,25 @@ class NewItemPage extends Header {
 		super(page);
 	}
 
-	locPageName = () => this.page.locator("h1");
-	locProjectNameField = () => this.page.locator("#name");
-	locProjectTypes = () => this.page.locator("#items label");
-	locFreestyleProject = () => this.page.locator(".hudson_model_FreeStyleProject");
-	locOkButton = () => this.page.locator("#ok-button");
+	getLocatorPageName = () => this.page.locator("h1");
+	getLocatorProjectNameField = () => this.page.locator("#name");
+	getLocatorProjectTypes = () => this.page.locator("#items label");
+	getLocatorFreestyleProject = () =>
+		this.page.locator(".hudson_model_FreeStyleProject");
+	getLocatorOkButton = () => this.page.locator("#ok-button");
 
 	async fillItemNameField(name) {
-		await this.locProjectNameField().type(name);
+		await this.getLocatorProjectNameField().type(name);
 		return this;
 	}
 
 	async clickFreestyleProject() {
-		await this.locFreestyleProject().click();
+		await this.getLocatorFreestyleProject().click();
 		return this;
 	}
 
 	async clickOkButton() {
-		await this.locOkButton().click();
+		await this.getLocatorOkButton().click();
 		return new ConfigurePage(this.page);
 	}
 }

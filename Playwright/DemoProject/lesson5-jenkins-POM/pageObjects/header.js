@@ -5,10 +5,10 @@ class Header {
 		this.page = page;
 	}
 
-	locLogoLink = () => this.page.locator("#jenkins-head-icon");
+	getLocatorLogoLink = () => this.page.locator("#jenkins-head-icon");
 
 	async clickLogoLink() {
-		await this.locLogoLink().click();
+		await this.getLocatorLogoLink().click();
 		return new HomePage(this.page);
 	}
 }
