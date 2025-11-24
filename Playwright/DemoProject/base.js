@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import HomePage from "./lesson5-jenkins-POM/pageObjects/homePage.js";
+// import HomePage from "./lesson5-jenkins-POM/pageObjects/homePage.js";
 // import { cleanData } from "./helpers/cleanData.js";
 
 export const test = base.extend({
@@ -28,11 +28,11 @@ export const test = base.extend({
 		await use(page);
 	},
 
-	homePage: async ({ page }, use) => {
-		const homePage = new HomePage(page);
+	// homePage: async ({ page }, use) => {
+	// 	const homePage = new HomePage(page);
 
-		await use(homePage);
-	},
+	// 	await use(homePage);
+	// },
 });
 
 export const expect = base.expect;
