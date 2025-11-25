@@ -1,7 +1,7 @@
-import Header from "./header";
+import Layout from "./layout";
 import NewItemPage from "./newItemPage";
 
-class HomePage extends Header {
+class HomePage extends Layout {
 	/**
 	 * @param {import('playwright').Page} page
 	 */
@@ -11,9 +11,9 @@ class HomePage extends Header {
 	}
 
 	getLocatorNewItemLink = () => this.page.locator("a[href='/view/all/newJob']");
-	getLocatorProjectLink = () =>
+	getLocatorItemLink = () =>
 		this.page.locator("#projectstatus .jenkins-table__link");
-	getLocatorProjectName = () =>
+	getLocatorItemName = () =>
 		this.page.locator("#projectstatus .jenkins-table__link span");
 
 	async clickNewItemLink() {

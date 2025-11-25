@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "../../base.js";
 import HomePage from "../pageObjects/homePage.js";
-import { homePageData } from "../testData/homePageData.js";
+import { globalData } from "../testData/globalData.js";
 
 test.describe("homepage tests", () => {
 	//
@@ -11,24 +11,24 @@ test.describe("homepage tests", () => {
 		const homePage = new HomePage(page);
 
 		const newItemPage = await homePage.clickNewItemLink();
-		await newItemPage.fillItemNameField(homePageData.projectName);
+		await newItemPage.fillItemNameField(globalData.projectName);
 		await newItemPage.clickFreestyleProject();
 
-		const configPage = await newItemPage.clickOkButton();
+		const configFreestyleProjectPage = await newItemPage.clickOkButton();
 
-		await configPage.clickLogoLink();
+		await configFreestyleProjectPage.clickLogoLink();
 
-		await expect(homePage.getLocatorProjectName()).toHaveText(
-			homePageData.projectName
+		await expect(homePage.getLocatorItemName()).toHaveText(
+			globalData.projectName
 		);
 
 		// await homePage
 		// 	.clickNewItemLink()
-		// 	.then(async (o) => await o.fillItemNameField(homePageData.projectName))
+		// 	.then(async (o) => await o.fillItemNameField(globalData.projectName))
 		// 	.then(async (o) => await o.clickFreestyleProject())
 		// 	.then(async (o) => await o.clickOkButton())
 		// 	.then(async (o) => await o.clickLogoLink());
 
-		// expect(homePage.getLocatorProjectName()).toHaveText(homePageData.projectName);
+		// expect(homePage.getLocatorItemName()).toHaveText(globalData.projectName);
 	});
 });

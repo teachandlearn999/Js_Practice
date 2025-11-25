@@ -1,6 +1,6 @@
 import HomePage from "./homePage";
 
-class Header {
+class Layout {
 	constructor(page) {
 		this.page = page;
 	}
@@ -13,4 +13,4 @@ class Header {
 	}
 }
 
-export default Header;
+export default Layout;

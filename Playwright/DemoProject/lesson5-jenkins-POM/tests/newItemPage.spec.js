@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "../../base.js";
 import HomePage from "../pageObjects/homePage.js";
-import { newItemPageData as pageData } from "../testData/newItemPageData.js";
+import { newItemPageData } from "../testData/newItemPageData.js";
 
 test.describe("new item page tests", () => {
 	// TC_01.001.09 | New Item > Creatе a new item> "New Item" be accessible (#142)
@@ -11,7 +11,7 @@ test.describe("new item page tests", () => {
 
 		const newItemPage = await homePage.clickNewItemLink();
 		await expect(newItemPage.getLocatorPageName()).toHaveText(
-			pageData.PageTitle
+			newItemPageData.pageTitle
 		);
 	});
 
@@ -22,10 +22,8 @@ test.describe("new item page tests", () => {
 
 		const newItemPage = await homePage.clickNewItemLink();
 
-		const projectTypes = await newItemPage
-			.getLocatorProjectTypes()
-			.allInnerTexts();
+		const projectTypes = await newItemPage.getLocatorItemTypes().allInnerTexts();
 
-		expect(projectTypes).toStrictEqual(pageData.ProjectTypes);
+		expect(projectTypes).toStrictEqual(newItemPageData.projectTypes);
 	});
 });

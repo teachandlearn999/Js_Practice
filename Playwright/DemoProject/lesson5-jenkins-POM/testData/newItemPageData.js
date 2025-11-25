@@ -1,6 +1,6 @@
 export const newItemPageData = {
-	PageTitle: "New Item",
-	ProjectTypes: [
+	pageTitle: "New Item",
+	projectTypes: [
 		"Freestyle project",
 		"Pipeline",
 		"Multi-configuration project",

@@ -1,20 +1,20 @@
-import Header from "./header";
-import ConfigurePage from "./configurePage";
+import Layout from "./layout";
+import ConfigureFreestyleProjectPage from "./configureFreestyleProjectPage";
 
-class NewItemPage extends Header {
+class NewItemPage extends Layout {
 	constructor(page) {
 		super(page);
 	}
 
 	getLocatorPageName = () => this.page.locator("h1");
-	getLocatorProjectNameField = () => this.page.locator("#name");
-	getLocatorProjectTypes = () => this.page.locator("#items label");
+	getLocatorItemNameField = () => this.page.locator("#name");
+	getLocatorItemTypes = () => this.page.locator("#items label");
 	getLocatorFreestyleProject = () =>
 		this.page.locator(".hudson_model_FreeStyleProject");
 	getLocatorOkButton = () => this.page.locator("#ok-button");
 
 	async fillItemNameField(name) {
-		await this.getLocatorProjectNameField().type(name);
+		await this.getLocatorItemNameField().type(name);
 		return this;
 	}
 
@@ -25,7 +25,7 @@ class NewItemPage extends Header {
 
 	async clickOkButton() {
 		await this.getLocatorOkButton().click();
-		return new ConfigurePage(this.page);
+		return new ConfigureFreestyleProjectPage(this.page);
 	}
 }
 
